@@ -1,5 +1,5 @@
 =================================================================
-new install on centos 6.5 x64   ... 
+new install on centos 6.5 x64 
 =================================================================
 
 1)
@@ -12,12 +12,14 @@ IP configuration
 echo "localip 192.168.10.1" >> /etc/pptpd.conf
 echo "remoteip 192.168.10.100-199" >> /etc/pptpd.conf
 
-DNS configuration
+DNS configuration 
 echo "ms-dns 8.8.8.8" >> /etc/ppp/options.pptpd
 echo "ms-dns 4.2.2.1" >> /etc/ppp/options.pptpd
+=> client에서 dns 정보를 받지 못하기 때문에 설정 의미가 없음
 
-Authentication configuration
+Authentication configuration 
 echo "$USERNAME * $PASSWORD *" >> /etc/ppp/chap-secrets
+=> 마지막 *은 접속하는 client ip를 입력하여 접근 제한 할수 있음.
 
 view /etc/sysctl.conf
 # Controls IP packet forwarding
@@ -39,7 +41,7 @@ or
 
 
 =================================================================
-구동 순서 
+구동 순서 (참조용)
 =================================================================
 
 /etc/init.d/pptpd stop
@@ -59,7 +61,6 @@ iptables -Z -t nat
 iptables -P INPUT ACCEPT
 iptables -P OUTPUT ACCEPT
 iptables -P FORWARD DROP
-
 
 * /root/bin/iptables_pptpd2.sh
 #!/bin/bash
@@ -146,7 +147,6 @@ iptables -t nat -A PREROUTING -i em1 -p tcp -d 192.168.30.0/24 --dport 1024:6553
 iptables -t nat -A PREROUTING -i em1 -p tcp --dport 21 -j DNAT --to-destination 192.168.30.0/24:21
 iptables -t nat -A POSTROUTING -o em1 -j MASQUERADE [duplicate]
 
-
 ============================
 ftp 파일 전송 성공
 ============================
@@ -161,7 +161,6 @@ netstat -tnlp 1723포트 확인
 
 /root/bin/iptables_pptpd2_ok.sh
 /root/bin/start_pptpd.sh
-
 
 [root@localhost bin]# cat iptables_pptpd2_ok.sh
 #!/bin/bash
